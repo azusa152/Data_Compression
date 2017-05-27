@@ -2,14 +2,15 @@
 #include<fstream>
 #include <sstream>
 using namespace std;
-float input_data_array[130];
+float input_data_array[10000];
+int input_data_quantity=0;
 const int kMeanQuantity=2;
 const int kGroupQuantity=4;
-#define FILENAME ".\\data\\slow_up&down.txt"
-float mean_array[130];
+#define FILENAME ".\\data\\real_7752.txt"
+float mean_array[10000];
 int mean_counter=0;
 
-string SAX_array[130];
+string SAX_array[10000];
 int SAX_counter=0;
 const double kSAXRange=0.5;
 
@@ -33,12 +34,11 @@ int main()
 }
 
 void InputData(){
-    int inputCounter=0;
     ifstream f;
     f.open(FILENAME);
     while (!f.eof()){
-        f >> input_data_array[inputCounter];
-        inputCounter++;
+        f >> input_data_array[input_data_quantity];
+        input_data_quantity++;
     }
     f.close();
 
@@ -46,12 +46,12 @@ void InputData(){
 
 
 void Mean(){
-  int inputDataSize=(sizeof(input_data_array)/sizeof(*input_data_array));
+
 
   mean_counter=0;
   float mean=0;
 
-  for(int i=0;i<inputDataSize;i++){
+  for(int i=0;i<input_data_quantity;i++){
     if((i%kMeanQuantity)==0&&i!=0){
       mean=mean/kMeanQuantity;
       mean_array[mean_counter]=mean;
