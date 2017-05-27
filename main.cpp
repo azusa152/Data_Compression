@@ -6,7 +6,7 @@ float input_data_array[130];
 const int kMeanQuantity=2;
 const int kGroupQuantity=4;
 #define FILENAME ".\\data\\slow_up&down.txt"
-double mean_array[130];
+float mean_array[130];
 int mean_counter=0;
 
 string SAX_array[130];
@@ -99,10 +99,10 @@ void Sax(int standard,int counter,float *tempArray){
 }
 
 int SAXtoChar(float difference,float rawData){
-  int symbolNumber=1;
+  int symbolNumber;
   float minRange=(kSAXRange*-1)*27;
   float maxRange=kSAXRange*27;
-  float interval=minRange;
+  float interval=0;
   if(difference<minRange){
     stringstream ss;
     ss << rawData;
@@ -118,23 +118,24 @@ int SAXtoChar(float difference,float rawData){
     return 1;
   }
 
-
-  for(symbolNumber;symbolNumber<=52;symbolNumber++){
-      interval=interval+kSAXRange;
-
-      if(difference<interval){
-            if(symbolNumber<=26){
-                SAX_array[SAX_counter]=char(64+symbolNumber);
-                SAX_counter++;
-                return 0;
-            }
-            else {
-                SAX_array[SAX_counter]=char(70+symbolNumber);
-                SAX_counter++;
-                return 0;
-            }
-
-      }
+  if(difference>0){
+    for(symbolNumber=1;symbolNumber<=26;symbolNumber++){
+        interval=interval+kSAXRange;
+        if(difference<interval){
+            SAX_array[SAX_counter]=char(96+symbolNumber);
+            SAX_counter++;
+            return 0;
+        }
     }
-
+  }
+  else{
+    for(symbolNumber=1;symbolNumber<=26;symbolNumber++){
+        interval=interval-kSAXRange;
+        if(difference>interval){
+            SAX_array[SAX_counter]=char(64+symbolNumber);
+            SAX_counter++;
+            return 0;
+        }
+    }
+  }
 }
