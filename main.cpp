@@ -1,12 +1,13 @@
 #include <iostream>
 #include<fstream>
 #include <sstream>
+#include <cmath>
 using namespace std;
 float input_data_array[10000];
 int input_data_quantity=0;
-const int kMeanQuantity=2;
-const int kGroupQuantity=4;
-#define FILENAME ".\\data\\real_7752.txt"
+const int kMeanQuantity=4;
+const int kGroupQuantity=8 ;
+#define FILENAME ".\\data\\slow_up.txt"
 float mean_array[10000];
 int mean_counter=0;
 
@@ -19,6 +20,7 @@ void Mean();
 void Sax(int standard,int counter,float *tempArray);
 void Group();
 void InputData();
+double Rounding(double num, int index);
 
 int main()
 {
@@ -26,9 +28,12 @@ int main()
     Mean();
     Group();
 
-    for(int i=0;i<=SAX_counter;i++){
+   for(int i=0;i<=SAX_counter;i++){
        cout<<SAX_array[i]<<endl;
     }
+    /*cout<<"input_data_quantity"<<input_data_quantity<<endl;
+    cout<<"mean_counter"<<mean_counter<<endl;
+    cout<<"SAX_counter"<<SAX_counter<<endl;*/
 
     return 0;
 }
@@ -46,9 +51,6 @@ void InputData(){
 
 
 void Mean(){
-
-
-  mean_counter=0;
   float mean=0;
 
   for(int i=0;i<input_data_quantity;i++){
@@ -59,6 +61,7 @@ void Mean(){
       mean=0;
 
     }
+
      mean=mean+input_data_array[i];
   }
 }
@@ -79,8 +82,7 @@ void Group(){
 void Sax(int standard,int counter,float *tempArray){
 
    float groupStandard=tempArray[standard];
-
-   int firstStandard=tempArray[standard];
+   float firstStandard=Rounding(tempArray[standard],1); // first number in group
    stringstream ss;
    ss << firstStandard;
    SAX_array[SAX_counter]=ss.str();
@@ -91,7 +93,7 @@ void Sax(int standard,int counter,float *tempArray){
         float difference=tempArray[i]-groupStandard;
         if(SAXtoChar(difference,tempArray[i])==1){
             groupStandard=tempArray[i];
-            cout<<"azusa"<<endl;
+
         }
 
    }
@@ -138,4 +140,29 @@ int SAXtoChar(float difference,float rawData){
         }
     }
   }
+}
+
+double Rounding(double num, int index)
+{
+    bool isNegative = false; // whether is negative number or not
+
+    if(num < 0) // if this number is negative, then convert to positive number
+    {
+        isNegative = true;
+        num = -num;
+    }
+
+    if(index >= 0)
+    {
+        int multiplier;
+        multiplier = pow(10, index);
+        num = (int)(num * multiplier + 0.5) / (multiplier * 1.0);
+    }
+
+    if(isNegative) // if this number is negative, then convert to negative number
+    {
+        num = -num;
+    }
+
+    return num;
 }

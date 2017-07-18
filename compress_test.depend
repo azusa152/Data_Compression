@@ -1,6 +1,0 @@
-# depslib dependency file v1.0
-1495865447 source:c:\users\azusa\documents\github\compress_test\main.cpp
-	<iostream>
-	<fstream>
-	<sstream>
-
